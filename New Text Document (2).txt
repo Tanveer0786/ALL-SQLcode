@@ -1,0 +1,172 @@
+USE [AdventureWorks2019]
+GO
+/****** Object:  StoredProcedure [dbo].[prcSaveEmployeeData]    Script Date: 21-09-2022 12:22:28 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create PROC [dbo].[OrderDetails]
+@SalesOrderID int, 
+@SalesOrderDetailID int, 
+@CarrierTrackingNumber nvarchar(25), 
+@OrderQty smallint , 
+@ProductID int, 
+@SpecialOfferID int,
+@UnitPrice money, 
+@UnitPriceDiscount money, 
+
+ @ModifiedDate datetime
+AS
+BEGIN
+  
+    
+BEGIN TRY
+    
+    BEGIN TRANSACTION
+        -- INSERTING DATA IN MASTER TABLE
+        
+        
+
+
+
+       INSERT INTO sales.SalesOrderDetail
+        (SalesOrderID, SalesOrderDetailID, CarrierTrackingNumber, OrderQty, ProductID, SpecialOfferID, UnitPrice, UnitPriceDiscount, ModifiedDate)
+        VALUES(@SalesOrderID , @SalesOrderDetailID , @CarrierTrackingNumber , @OrderQty , @ProductID, @SpecialOfferID ,@UnitPrice , @UnitPriceDiscount,
+              @ModifiedDate  )
+                
+         -- @@Identity
+    
+      
+    
+    COMMIT TRANSACTION
+
+
+
+END TRY
+BEGIN CATCH
+    if(@@TRANCOUNT>0)
+        ROLLBACK TRANSACTION
+
+
+
+       EXEC dbo.uspLogError
+END CATCH
+END
+
+
+USE [AdventureWorks2019]
+GO
+/****** Object:  StoredProcedure [dbo].[prcSaveEmployeeData]    Script Date: 21-09-2022 12:22:28 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create PROC [dbo].[prcSaveEmployeeData]
+@EmpName varchar(20),
+@EmpEmail varchar(20),
+@NationalIDNumber varchar(15),
+@LoginID nvarchar(256),
+@OrganizationNode hierarchyId,
+@JobTitle nvarchar(50),
+@BirthDate date,
+@MaritalStatus nchar(1),
+@Gender nchar(1),
+@HireDate date,
+@SalariedFlag tinyint,
+@VacationHours smallint,
+@SickLeaveHours smallint,
+@CurrentFlag tinyint,
+@Rate money
+AS
+BEGIN
+    -- Set IDENTITYINSERT ON
+    
+BEGIN TRY
+    
+    BEGIN TRANSACTION
+        -- INSERTING DATA IN MASTER TABLE
+        
+        INSERT INTO Person.BusinessEntity
+        ([rowguid], [ModifiedDate])
+        Values(NEWID(), getdate())
+
+
+
+       Declare @Id bigint
+        Select @ID = SCOPE_IDENTITY()
+
+
+
+       INSERT INTO HumanResources.Employee
+        ([BusinessEntityID],[NationalIDNumber], [LoginID], [OrganizationNode], [JobTitle], [BirthDate], [MaritalStatus],
+        [Gender], [HireDate], [SalariedFlag], [VacationHours], [SickLeaveHours],
+        [CurrentFlag], [ModifiedDate])
+        VALUES(@Id, @NationalIDNumber,@LoginID,@OrganizationNode, @JobTitle,@BirthDate, @MaritalStatus,@Gender,
+        @HireDate, @SalariedFlag,@VacationHours,@SickLeaveHours,@CurrentFlag, getdate())
+                
+         -- @@Identity
+    
+        -- INSERT / UPADET DATA in CHILD TABLE(S)
+        INSERT INTO HumanResources.EmployeePayHistory
+        ([BusinessEntityID], [RateChangeDate], [Rate], [PayFrequency], [ModifiedDate])
+        VALUES(@Id, getdate(), @Rate, '1',getdate())
+    
+    COMMIT TRANSACTION
+
+
+
+END TRY
+BEGIN CATCH
+    if(@@TRANCOUNT>0)
+        ROLLBACK TRANSACTION
+
+
+
+       EXEC dbo.uspLogError
+END CATCH
+END
+
+exec [dbo].[OrderDetails] @SalesOrderID='121', SalesOrderDetailID, CarrierTrackingNumber, OrderQty, ProductID, SpecialOfferID, UnitPrice, UnitPriceDiscount, LineTotal, rowguid, ModifiedDate
+
+select * from [Sales].[SalesOrderHeader]
+select * from
+select * from
+reate table Employe(
+Employe_id bigint not null,
+Employee_name varchar(50) not null,
+designation varchar(50),
+department_id  bigint not null ,
+Official_email varchar(50),
+primary key(Employe_id),
+foreign key(department_id) references department(Department_id)
+)
+
+create table department(
+Department_id bigint not null,
+Department_name varchar(50) not null,
+[location] varchar(50),
+primary key (Department_id)
+
+)
+elect * from production.ProductInventory
+
+select * from production.Product
+
+select * from Production.Location
+
+select  LocationID, sum(Quantity) as totalQuantity from production.ProductInventory  group by LocationID
+select ReorderPoint, [Name],ProductID from  production.Product
+
+select [name], productsubcategoryid from production.Product
+
+
+
+
+
+select [Name] ,sum(Quantity)as totalquantity from production.ProductInventory
+inner join production.Product
+on ProductInventory.Quantity=Product.[Name]
+select ReorderPoint, [Name],ProductID
+from  production.Product
+
+select * from Sales.SalesOrderDetail

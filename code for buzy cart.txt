@@ -1,0 +1,79 @@
+Create Table [dbo].[Admin](
+  Country_Id int not null,
+  Country_Name varchar(30),
+  Main_Branch varchar (30),
+  Number_Of_Inventry int,
+  Total_purchasing int,
+  Total_Selling int,
+ 
+  primary key(Country_Id)
+);
+select * from Admin
+
+alter table Admin add Date int
+
+create table dbo.Inventry(
+Inventry_id int not null,
+Country varchar (30),
+Branch varchar(30),
+Total_Product_Purchased int,
+Total_Product_Selled int,
+Total_Amount_Purchasing int,
+Total_Amount_Selling int,
+Date date,
+primary key(Inventry_id)
+
+
+)
+
+
+Insert dbo.Admin(Country_Id ,
+  Country_Name ,
+  Main_Branch ,
+  Number_Of_Inventry ,
+  Total_purchasing ,
+  Total_Selling 
+  )values(1,'India','Delhi',5,456789,987654)
+  Insert dbo.Admin(Country_Id ,
+  Country_Name ,
+  Main_Branch ,
+  Number_Of_Inventry ,
+  Total_purchasing ,
+  Total_Selling 
+  )values(2,'USA','california',3,456743,987622)
+  
+  Insert dbo.Admin(Country_Id ,
+  Country_Name ,
+  Main_Branch ,
+  Number_Of_Inventry ,
+  Total_purchasing ,
+  Total_Selling 
+  )values(3,'Africa','Cairo',4,456743,987622)
+  Insert dbo.Admin(Country_Id ,
+  Country_Name ,
+  Main_Branch ,
+  Number_Of_Inventry ,
+  Total_purchasing ,
+  Total_Selling 
+  )values(4,'UAE','Dubai',3,456743,987622)
+  Insert dbo.Admin(Country_Id ,
+  Country_Name ,
+  Main_Branch ,
+  Number_Of_Inventry ,
+  Total_purchasing ,
+  Total_Selling 
+  )values(5,'Russia','Moscow',2,456743,987622)
+  Insert dbo.Admin(Country_Id ,
+  Country_Name ,
+  Main_Branch ,
+  Number_Of_Inventry ,
+  Total_purchasing ,
+  Total_Selling 
+  )values(7,'Kuwait','Alfahahil',3,456743,987622)
+  Insert dbo.Admin(Country_Id ,
+  Country_Name ,
+  Main_Branch ,
+  Number_Of_Inventry ,
+  Total_purchasing ,
+  Total_Selling 
+  )values(6,'Lebanon','Beirut',1,456743,987622)
